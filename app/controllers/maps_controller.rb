@@ -9,7 +9,13 @@ class MapsController < ApplicationController
 
   # GET /maps/1
   # GET /maps/1.json
-  def show
+  #HACK: #index handles all requests for individual maps, since we don't
+  # persist data (because we build the map based on the parameters).
+  alias show index
+
+  # GET maps/widget
+  def widget
+
   end
 
   # GET /maps/new

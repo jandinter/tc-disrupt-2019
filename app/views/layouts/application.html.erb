@@ -5,8 +5,26 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script src='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.41.0/maps/maps-web.min.js'></script>
+    <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.41.0/maps/maps.css'/>
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'maps', 'data-turbolinks-track': 'reload' %>
+
+    <style>
+       html,
+       body,
+       div {
+         margin: 0;
+         padding: 0;
+       }
+
+       #map {
+           width: 100vw;
+           height: 100vh;
+       }
+    </style>
   </head>
 
   <body>

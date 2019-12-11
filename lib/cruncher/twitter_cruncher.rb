@@ -38,7 +38,8 @@ module Cruncher
           long = t.geo.coordinates[1]
           geo_accuracy = 2
         elsif !t.place.nil?
-          lat, long = t.place.bounding_box.coordinates.flatten.first(2)
+          points = t.place.bounding_box.coordinates.flatten(1)
+          lat, long = Geocoder::Calculations.geographic_center(points)
           geo_accuracy = 1
         else
           geo_accuracy = 0

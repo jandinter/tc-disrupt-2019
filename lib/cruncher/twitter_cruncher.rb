@@ -13,13 +13,10 @@ module Cruncher
       # Call Twitter API to get tweets, parse JSON response
       geocode_parameter = "#{lat},#{long},#{radius}"
       options = {geocode: geocode_parameter,
-                 count: 100}
-
-      puts "API search parameters: #{options}"
+                 count: 100,
+                 result_type: 'recent'}
 
       api_result = @client.search("", option = options)
-
-      puts "Tweets: #{api_result.count}"
 
       parse_tweets(api_result)
     end
@@ -29,22 +26,40 @@ module Cruncher
     def parse_tweets(api_result)
       # puts api_result.first.inspect
       # pp api_result.first.attrs
-
-      compacted_tweets = api_result.first(20).collect do |t|
-        {screen_name: t.user.screen_name,
-         real_name: t.user.name,
-         text: t.text,
-         datetime: t.created_at,
-         id: t.id,
-         long: t.geo.coordinates[0],
-         lat: t.geo.coordinates[1],
-         followers_count: t.user.followers_count,
-         friends_count: t.user.friends_count,
-         url: t.uri.to_s }
+      api_result.first(10).map do |t|
+        if t.geo.nil? && t.place
+          pp t.attrs
+        end
       end
 
-      pp compacted_tweets
-      compacted_tweets
+      compacted_tweets = api_result.collect do |t|
+        if !t.geo.coordinates.nil?
+          lat = t.geo.coordinates[0]
+          long = t.geo.coordinates[1]
+          geo_accuracy = 2
+        elsif !t.place.nil?
+          lat, long = t.place.bounding_box.coordinates.flatten.first(2)
+          geo_accuracy = 1
+        else
+          geo_accuracy = 0
+        end
+
+        if lat && long
+          {screen_name: t.user.screen_name,
+           real_name: t.user.name,
+           text: t.text,
+           datetime: t.created_at,
+           id: t.id,
+           long: long,
+           lat: lat,
+           followers_count: t.user.followers_count,
+           friends_count: t.user.friends_count,
+           url: t.uri.to_s,
+           geo_accuracy: geo_accuracy}
+        end
+      end
+
+      compacted_tweets.compact
     end
   end
 end

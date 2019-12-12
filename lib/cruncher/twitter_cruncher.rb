@@ -36,7 +36,7 @@ module Cruncher
       #   end
       # end
 
-      compacted_tweets = api_result.first(20).collect do |t|
+      compacted_tweets = api_result.first(250).collect do |t|
         if !t.geo.coordinates.nil?
           lat = t.geo.coordinates[0]
           long = t.geo.coordinates[1]

@@ -1,3 +1,27 @@
 // Place all the styles related to the Maps controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.bubble {
+  background: white;
+  width: 100%;
+  max-width: 250px;
+  padding: 6px 4px;
+  border-radius: 3px;
+  box-shadow: 1px 3px 8px rgba(39,44,49,.03);
+  border: solid 1px rgb(102, 153, 204);
+  opacity: 98%;
+  font-family: Avenir, -apple-system, SFPro, Helvetica;
+  z-index: 5000;
+}
+
+.bubble:after {
+   content: "";
+   position: absolute;
+   top: 100%;
+   left: 100px;
+   border-top: 10px solid white;
+   border-top-color: white;
+   border-left: 10px solid transparent;
+   border-right: 10px solid transparent;
+   z-index: 5005;
+}

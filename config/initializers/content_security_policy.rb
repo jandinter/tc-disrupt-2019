@@ -10,8 +10,8 @@ Rails.application.config.content_security_policy do |policy|
   policy.img_src     :self, :https, :data, :blob, '*.tomtom.com'
   policy.object_src  '*.tomtom.com'
   policy.script_src  :self, :https, :data, :blob, :unsafe_inline, '*.tomtom.com'
-  policy.style_src   :self, :https, :unsafe_inline, '*tomtom.com'
-  policy.worker_src   :self, :https, :data, :unsafe_inline, :blob, '*tomtom.com'
+  policy.style_src   :self, :https, :unsafe_inline, '*.tomtom.com'
+  policy.worker_src   :self, :https, :data, :unsafe_inline, :blob, '*.tomtom.com'
   # If you are using webpack-dev-server then specify webpack-dev-server host
   policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035" if Rails.env.development?
 

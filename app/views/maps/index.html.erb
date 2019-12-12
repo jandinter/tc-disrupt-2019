@@ -19,6 +19,69 @@
 
     cruncher_map.addControl(new tt.FullscreenControl());
     cruncher_map.addControl(new tt.NavigationControl());
+
+    //AJAX GET Func
+
+    console.log('Hello from maps.js');
+
+    function ajax_get(url, data, callback) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log('responseText:' + xmlhttp.responseText);
+                try {
+                    var data = JSON.parse(xmlhttp.responseText);
+                } catch(err) {
+                    console.log(err.message + " in " + xmlhttp.responseText);
+                    return;
+                }
+                callback(data);
+            }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+    function getMarkersFromTweets(tomtom, tweets) {
+      var popupOffsets = {
+          top: [0, 0],
+          bottom: [0, -70],
+          'bottom-right': [0, -70],
+          'bottom-left': [0, -70],
+          left: [25, -35],
+          right: [-25, -35]
+        }
+      return tweets.map(tweet => {
+        console.log(tweet)
+        const markerEl = document.createElement('p');
+        markerEl.innerHTML = tweet.text;
+        // markerEl.appendChild(document.createElement('h6'));
+        // const markerText = document.createElement('div');
+        // markerText.innerHTML = tweet.text;
+        // markerEl.appendChild(markerText);
+        // const markerMetadata = document.createElement('div');
+        // markerMetadata.classList.add('marker--metadata')
+        // markerMetadata.innerHTML = "@" + tweet.screen_name + " at " + tweet.datetime
+        // markerEl.appendChild(markerMetadata);
+        markerEl.classList.add('bubble');
+        markerEl.classList.add('speech');
+        const marker = new tomtom.Marker({element: markerEl}).setLngLat([tweet.long,tweet.lat]);
+        return marker;
+      });
+    }
+
+    var long = cruncher_map.getCenter().toArray()[0];
+    var lat = cruncher_map.getCenter().toArray()[1];
+    var radius = 1500;
+    ajax_get(`/updates?lat=${lat}&long=${long}&radius=${radius}`,
+      {lat: lat, long: long, radius: radius},
+      function(data){
+      const tweetsMarkers = getMarkersFromTweets(tt, data);
+      tweetsMarkers.forEach(marker => marker.addTo(cruncher_map));
+      }
+      );
+
   </script>
 </main>
 

@@ -4,8 +4,12 @@ module Cruncher
 
     def initialize
       @client = ::Twitter::REST::Client.new do |config|
-        config.consumer_key    = Rails.application.credentials.twitter[:consumer_key]
-        config.consumer_secret = Rails.application.credentials.twitter[:consumer_secret]
+        # config.consumer_key    = Rails.application.credentials.twitter[:consumer_key]
+        # config.consumer_secret = Rails.application.credentials.twitter[:consumer_secret]
+        # Only for the jury decision: API keys in plain text :(
+        #TODO: Reset API keys!
+        config.consumer_key    = 'SnxSPDeCj1LcDG5cuRljlxz7h'
+        config.consumer_secret = 'ACGTioNBjnU9X8q1qkDoLjYerJTAAK0rHoRw6yovyYHf3qJTQ0'
       end
     end
 
@@ -26,13 +30,13 @@ module Cruncher
     def parse_tweets(api_result)
       # puts api_result.first.inspect
       # pp api_result.first.attrs
-      api_result.first(10).map do |t|
-        if t.geo.nil? && t.place
-          pp t.attrs
-        end
-      end
+      # api_result.first(10).map do |t|
+      #   if t.geo.nil? && t.place
+      #     pp t.attrs
+      #   end
+      # end
 
-      compacted_tweets = api_result.collect do |t|
+      compacted_tweets = api_result.first(20).collect do |t|
         if !t.geo.coordinates.nil?
           lat = t.geo.coordinates[0]
           long = t.geo.coordinates[1]
@@ -49,6 +53,7 @@ module Cruncher
           {screen_name: t.user.screen_name,
            real_name: t.user.name,
            text: t.text,
+           # image: t.media.media_url,
            datetime: t.created_at,
            id: t.id,
            long: long,

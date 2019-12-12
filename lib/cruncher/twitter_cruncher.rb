@@ -4,12 +4,8 @@ module Cruncher
 
     def initialize
       @client = ::Twitter::REST::Client.new do |config|
-        # config.consumer_key    = Rails.application.credentials.twitter[:consumer_key]
-        # config.consumer_secret = Rails.application.credentials.twitter[:consumer_secret]
-        # Only for the jury decision: API keys in plain text :(
-        #TODO: Reset API keys!
-        config.consumer_key    = 'SnxSPDeCj1LcDG5cuRljlxz7h'
-        config.consumer_secret = 'ACGTioNBjnU9X8q1qkDoLjYerJTAAK0rHoRw6yovyYHf3qJTQ0'
+        config.consumer_key    = Rails.application.credentials.twitter[:consumer_key]
+        config.consumer_secret = Rails.application.credentials.twitter[:consumer_secret]
       end
     end
 

@@ -21,9 +21,6 @@
     cruncher_map.addControl(new tt.NavigationControl());
 
     //AJAX GET Func
-
-    console.log('Hello from maps.js');
-
     function ajax_get(url, data, callback) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -73,14 +70,30 @@
 
     var long = cruncher_map.getCenter().toArray()[0];
     var lat = cruncher_map.getCenter().toArray()[1];
-    var radius = 1500;
-    ajax_get(`/updates?lat=${lat}&long=${long}&radius=${radius}`,
-      {lat: lat, long: long, radius: radius},
-      function(data){
-      const tweetsMarkers = getMarkersFromTweets(tt, data);
-      tweetsMarkers.forEach(marker => marker.addTo(cruncher_map));
-      }
-      );
+    var radius = 2500;
+
+    function showTweets() {
+      ajax_get(`/updates?lat=${lat}&long=${long}&radius=${radius}`,
+        {lat: lat, long: long, radius: radius},
+        function(data){
+        const tweetsMarkers = getMarkersFromTweets(tt, data);
+        tweetsMarkers.forEach(marker => marker.addTo(cruncher_map));
+        }
+        );
+    }
+
+    showTweets();
+
+    var crunch_timer;
+
+    // while(true){
+    //   if(cruncher_map.dragPan.isActive()){
+    //     if (crunch_timer) {
+    //       window.clearTimeout(crunch_timer);
+    //     }
+    //     crunch_timer = window.setTimeout(showTweets(),1500);
+    //   }
+    // }
 
   </script>
 </main>
